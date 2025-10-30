@@ -2,11 +2,7 @@
 Punto de entrada principal para la demostración del sistema PythonEnvios.
 Este archivo simula el rol del "Cliente" u "Operador" que utiliza el sistema.
 """
-
-# --- Standard library imports ---
-import time # Para simular el paso del tiempo
-
-# --- Local application imports ---
+import time 
 # Entidades y Contexto de Strategy
 from python_envios.entidades.cliente import Cliente
 from python_envios.entidades.servicio_rutas import ServicioRutas
@@ -18,10 +14,6 @@ from python_envios.servicios.sistema_rastreo_global import SistemaRastreoGlobal
 # Patrones
 from python_envios.patrones.observer.cliente_notifier import ClienteNotifier
 from python_envios.patrones.strategy.estrategia_ruteo import RutaMasCorta, RutaEcologica, RutaMasRapida
-
-# --- Clases de Entidad (Definidas aquí para simplicidad de la demo) ---
-# En un proyecto real, estarían en sus propios archivos en 'entidades/'
-# Hacemos esto para que el main.py sea ejecutable sin crear todos los archivos.
 
 from python_envios.patrones.observer.observable import Observable
 class Paquete(Observable['Paquete']):
@@ -49,7 +41,6 @@ class Paquete(Observable['Paquete']):
             print(f"\n---> (Paquete {self._id}): Estado cambiado a '{self._estado}' <---")
             self.notificar_observadores(self)
 
-# Sobrescribimos la entidad Paquete para inyectar la dependencia de Observable
 import python_envios.entidades.paquete as paquete_module
 paquete_module.Paquete = Paquete
 
@@ -72,20 +63,15 @@ class Moto(Vehiculo):
         super().__init__(id_vehiculo, capacidad_kg, 110.0)
     def describir(self): print(f"Moto ID {self._id}, Capacidad: {self._capacidad_kg}kg")
 
-# Sobrescribimos las entidades Vehiculo
 import python_envios.entidades.vehiculo as vehiculo_module
 vehiculo_module.Vehiculo = Vehiculo
 vehiculo_module.Camion = Camion
 vehiculo_module.Moto = Moto
 
 
-# --- Funciones de Demostración ---
-
 def imprimir_titulo(titulo):
     """Función helper para imprimir títulos."""
     print("\n" + "="*70)
-    # --- CORRECCIÓN AQUÍ ---
-    # El método es .upper() (en minúsculas), no .UPPER()
     print(f"  {titulo.upper()}")
     print("="*70)
 
@@ -116,10 +102,8 @@ def main_demo_patrones():
     cliente_ana = Cliente("Ana")
     cliente_luis = Cliente("Luis")
     
-    # Contexto del Strategy
-    servicio_rutas = ServicioRutas() # Usa RutaMasRapida por defecto
+    servicio_rutas = ServicioRutas() 
     
-    # Observers concretos
     notifier_ana = ClienteNotifier(cliente_ana.get_nombre())
     notifier_luis = ClienteNotifier(cliente_luis.get_nombre())
 
@@ -130,23 +114,19 @@ def main_demo_patrones():
     imprimir_titulo("Patrón Factory Method y Observer (Suscripción)")
     print("Registrando paquetes (esto usa Factory para asignar vehículo y suscribe Observers)...")
 
-    # Paquete pequeño, asignará Moto (Factory)
     paquete_ana_id = servicio_logistica.registrar_y_asignar_paquete(
         origen="Depósito Central",
         destino="Casa Ana",
-        peso_kg=5.0, # <= 50kg
-        observadores_externos=[notifier_ana] # Suscribimos el notificador de Ana
+        peso_kg=5.0, 
+        observadores_externos=[notifier_ana] 
     )
 
-    # Paquete grande, asignará Camión (Factory)
     paquete_luis_id = servicio_logistica.registrar_y_asignar_paquete(
         origen="Puerto Seco",
         destino="Fábrica Luis",
         peso_kg=501.0, # > 50kg
-        observadores_externos=[notifier_luis] # Suscribimos el notificador de Luis
+        observadores_externos=[notifier_luis] 
     )
-
-    # Mostramos estado inicial (vía Singleton Observer)
     rastreador1.mostrar_estado_global()
 
     # ======================================================================
@@ -169,18 +149,17 @@ def main_demo_patrones():
     print("Procesando envíos (cambiarán estado y notificarán a los Observers)...")
 
     print("\n--- Procesando paquete de Ana ---")
-    servicio_logistica.procesar_envio(paquete_ana_id) # Cambia estado a "En Tránsito" -> Notifica
+    servicio_logistica.procesar_envio(paquete_ana_id) 
     time.sleep(1) # Simula tiempo
-    servicio_logistica.procesar_envio(paquete_ana_id) # Cambia estado a "Entregado" -> Notifica
+    servicio_logistica.procesar_envio(paquete_ana_id) 
 
     print("\n--- Procesando paquete de Luis ---")
-    servicio_logistica.procesar_envio(paquete_luis_id) # Cambia estado a "En Tránsito" -> Notifica
+    servicio_logistica.procesar_envio(paquete_luis_id) 
 
     # ======================================================================
     # PATRÓN SINGLETON: Verificación final del estado
     # ======================================================================
     imprimir_titulo("Patrón Singleton: Verificación Final del Rastreo")
-    # Usamos la segunda variable, pero apunta a la misma instancia
     rastreador2.mostrar_estado_global()
 
     imprimir_titulo("Simulación Logística Completada")

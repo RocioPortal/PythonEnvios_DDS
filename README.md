@@ -1,4 +1,7 @@
 Sistema de Gestión Logística - PythonEnvios
+Alumna: Rocio Portal 
+Legajo: 63217
+Ingeniería en Informática
 
 Sistema de gestión logística para el envío de paquetes, demostrando la implementación de patrones de diseño clave en Python, similar en estructura al parcial de PythonForestal.
 

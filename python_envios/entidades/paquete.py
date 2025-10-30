@@ -2,11 +2,7 @@
 Define la entidad principal Paquete.
 Esta entidad también actúa como un 'Observable' (Sujeto) en el patrón Observer.
 """
-
-# --- Standard library imports ---
 from typing import TYPE_CHECKING, Optional
-
-# --- Local application imports ---
 from ..patrones.observer.observable import Observable
 
 if TYPE_CHECKING:
@@ -38,9 +34,6 @@ class Paquete(Observable["Paquete"]):
         """
         super().__init__() # Llama al __init__ de Observable
         
-        # --- CORRECCIÓN 2 ---
-        # El error estaba aquí. Se debe usar '._counter' para coincidir
-        # con la variable de clase definida arriba.
         Paquete._counter += 1
         self._id: int = Paquete._counter
         
@@ -89,7 +82,6 @@ class Paquete(Observable["Paquete"]):
         if self._estado != nuevo_estado:
             self._estado = nuevo_estado
             print(f"\n---> (Paquete {self._id}): Estado cambiado a '{self._estado}' <---")
-            # Notifica a todos los suscriptores (ClienteNotifier, SistemaRastreoGlobal)
             self.notificar_observadores(self)
 
     def __str__(self) -> str:

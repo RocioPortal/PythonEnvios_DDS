@@ -1,13 +1,9 @@
 """
 Implementación del Patrón Factory Method.
 """
-# --- Standard library imports ---
 from typing import TYPE_CHECKING, Dict, Callable
-
-# --- Local application imports ---
 from ...constantes import PESO_MAXIMO_MOTO
 
-# Necesitamos la clase base y las concretas
 if TYPE_CHECKING:
     from ...entidades.vehiculo import Vehiculo, Camion, Moto
 
@@ -16,8 +12,7 @@ class VehiculoFactory:
     Implementa el patrón Factory Method para crear diferentes tipos de vehículos.
     Desacopla la lógica de negocio de las clases concretas de vehículos.
     """
-    
-    # Contador simple para IDs únicos de vehículos
+
     _contador_camion = 0
     _contador_moto = 0
 
@@ -46,7 +41,6 @@ class VehiculoFactory:
         Returns:
             Vehiculo: Una instancia de Camion o Moto.
         """
-        # Lógica de decisión centralizada
         if peso_paquete_kg > PESO_MAXIMO_MOTO:
             print(f"DEBUG (Factory): Peso {peso_paquete_kg}kg > {PESO_MAXIMO_MOTO}kg. Creando Camión.")
             return VehiculoFactory._crear_camion()

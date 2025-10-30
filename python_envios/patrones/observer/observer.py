@@ -2,13 +2,10 @@
 Implementación de la interfaz Observer (ABC) del Patrón Observer.
 Utiliza Generics de Python (TypeVar) para ser tipo-seguro.
 """
-
-# --- Standard library imports ---
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 
-# --- Type variables ---
-T = TypeVar('T') # Tipo genérico para el dato del evento
+T = TypeVar('T') 
 
 class Observer(Generic[T], ABC):
     """

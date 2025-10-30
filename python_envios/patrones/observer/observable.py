@@ -2,16 +2,11 @@
 Implementación de la clase base Observable (Subject) del Patrón Observer.
 Utiliza Generics de Python (TypeVar) para ser tipo-seguro.
 """
-
-# --- Standard library imports ---
 from abc import ABC
 from typing import Generic, TypeVar, List
-
-# --- Local application imports ---
 from .observer import Observer
 
-# --- Type variables ---
-T = TypeVar('T') # Tipo genérico para el dato del evento
+T = TypeVar('T') 
 
 class Observable(Generic[T], ABC):
     """

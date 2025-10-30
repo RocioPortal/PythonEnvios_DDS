@@ -1,11 +1,8 @@
 """
 Implementación del Contexto para el Patrón Strategy.
 """
-# --- Standard library imports ---
 from typing import Dict, Optional, TYPE_CHECKING
-
-# --- Local application imports ---
-from ..patrones.strategy.estrategia_ruteo import EstrategiaRuteo, RutaMasRapida # Importamos una por defecto
+from ..patrones.strategy.estrategia_ruteo import EstrategiaRuteo, RutaMasRapida 
 
 if TYPE_CHECKING:
     from .vehiculo import Vehiculo
@@ -28,7 +25,6 @@ class ServicioRutas:
             estrategia_inicial (Optional[EstrategiaRuteo]): La estrategia a usar.
                                                              Defaults to RutaMasRapida().
         """
-        # Inyección de dependencia de la estrategia (o valor por defecto)
         self._estrategia_actual = estrategia_inicial if estrategia_inicial else RutaMasRapida()
 
     def set_estrategia(self, nueva_estrategia: EstrategiaRuteo) -> None:
@@ -57,7 +53,6 @@ class ServicioRutas:
             Dict: La ruta calculada por la estrategia actual.
         """
         print(f"[Servicio Rutas] Calculando ruta de '{origen}' a '{destino}' usando {self._estrategia_actual.__class__.__name__}...")
-        # Delega el cálculo a la estrategia actual
         ruta = self._estrategia_actual.calcular_ruta(origen, destino, distancia_km, vehiculo)
         
         print(f"[Servicio Rutas] Ruta calculada:")

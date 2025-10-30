@@ -9,15 +9,6 @@ __pycache__/
 venv/
 ENV/
 
-# Carpetas de configuración de IDEs
-.idea/
-.vscode/
-
-# Archivos de datos generados (si aplica)
-data/
-*.dat
-
-# Reportes de tests
 .coverage
 .pytest_cache/
 htmlcov/

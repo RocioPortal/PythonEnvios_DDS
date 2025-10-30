@@ -2,10 +2,8 @@
 Servicio principal de logística.
 Orquesta los patrones y entidades.
 """
-# --- Standard library imports ---
 from typing import List, Dict, Any
 
-# --- Local application imports ---
 from ..entidades.paquete import Paquete
 from ..entidades.cliente import Cliente
 from ..patrones.factory.vehiculo_factory import VehiculoFactory
@@ -18,7 +16,6 @@ class ServicioLogistica:
     Utiliza el Factory para crear vehículos y el Singleton para rastrear.
     """
     def __init__(self):
-        # Obtiene la instancia única del Singleton
         self._rastreador = SistemaRastreoGlobal.get_instance()
         self._paquetes_db: Dict[int, Paquete] = {}
 
@@ -45,21 +42,15 @@ class ServicioLogistica:
         """
         print(f"\nRegistrando nuevo paquete de {peso_kg}kg para ir de '{origen}' a '{destino}'...")
         
-        # 1. Crear la entidad paquete
         paquete = Paquete(origen, destino, peso_kg)
         
-        # 2. Usar Factory Method para asignar vehículo
         vehiculo = VehiculoFactory.crear_vehiculo(paquete.get_peso_kg())
         paquete.set_vehiculo(vehiculo)
         
-        # 3. Registrar en la "base de datos" de este servicio
         self._paquetes_db[paquete.get_id()] = paquete
         
-        # 4. Suscribir observadores
-        # Suscribir el rastreador global (Singleton)
         self._rastreador.registrar_nuevo_paquete(paquete) 
         
-        # Suscribir otros observadores (ej. el notificador del cliente)
         for obs in observadores_externos:
             paquete.agregar_observador(obs)
             
@@ -80,7 +71,6 @@ class ServicioLogistica:
         paquete = self._paquetes_db[paquete_id]
         estado_actual = paquete.get_estado()
 
-        # Lógica de transición de estados simple
         if estado_actual == "Registrado":
             paquete.set_estado("En Tránsito")
         elif estado_actual == "En Tránsito":

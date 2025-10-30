@@ -3,7 +3,6 @@ Entidades para Vehículos.
 Define la clase base abstracta y las clases concretas
 que serán creadas por el Factory Method.
 """
-# --- Standard library imports ---
 from abc import ABC, abstractmethod
 
 class Vehiculo(ABC):
@@ -23,8 +22,6 @@ class Vehiculo(ABC):
     def describir(self) -> None:
         """Método abstracto para describir el vehículo."""
         pass
-
-# --- Clases Concretas ---
 
 class Camion(Vehiculo):
     """Vehículo tipo Camión."""

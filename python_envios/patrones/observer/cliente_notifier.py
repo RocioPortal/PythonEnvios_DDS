@@ -1,9 +1,8 @@
 """
 Implementación de un Observer concreto.
 """
-# --- Local application imports ---
 from .observer import Observer
-from ...entidades.paquete import Paquete # Importamos Paquete para type hinting
+from ...entidades.paquete import Paquete 
 
 class ClienteNotifier(Observer[Paquete]):
     """

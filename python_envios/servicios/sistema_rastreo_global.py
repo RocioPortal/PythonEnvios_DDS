@@ -2,11 +2,8 @@
 Implementación del Patrón Singleton.
 Esta clase también actúa como un Observer.
 """
-# --- Standard library imports ---
 from threading import Lock
 from typing import Dict, Any, Optional
-
-# --- Local application imports ---
 from ..entidades.paquete import Paquete
 from ..patrones.observer.observer import Observer
 
@@ -28,7 +25,6 @@ class SistemaRastreoGlobal(Observer[Paquete]):
         """Controla la creación de la instancia (Singleton)."""
         if cls._instance is None:
             with cls._lock:
-                # Double-checked locking
                 if cls._instance is None:
                     cls._instance = super().__new__(cls)
                     cls._instance._paquetes_activos = {}
@@ -39,7 +35,7 @@ class SistemaRastreoGlobal(Observer[Paquete]):
     def get_instance(cls) -> 'SistemaRastreoGlobal':
         """Obtiene la instancia única del sistema de rastreo."""
         if cls._instance is None:
-            cls() # Llama a __new__ si aún no existe
+            cls() 
         return cls._instance
 
     def actualizar(self, paquete: Paquete) -> None:
@@ -72,7 +68,6 @@ class SistemaRastreoGlobal(Observer[Paquete]):
         """Registra un nuevo paquete para empezar a rastrearlo."""
         if paquete.get_id() not in self._paquetes_activos:
             print(f"[Rastreo Global] Registrando nuevo paquete ID {paquete.get_id()}")
-            # Se suscribe al paquete para recibir futuras actualizaciones (Observer)
             paquete.agregar_observador(self)
             self._paquetes_activos[paquete.get_id()] = {
                 "estado": paquete.get_estado(), 
