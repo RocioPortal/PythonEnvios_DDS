@@ -1,0 +1,56 @@
+"""
+Implementación del Patrón Factory Method.
+"""
+# --- Standard library imports ---
+from typing import TYPE_CHECKING, Dict, Callable
+
+# --- Local application imports ---
+from ...constantes import PESO_MAXIMO_MOTO
+
+# Necesitamos la clase base y las concretas
+if TYPE_CHECKING:
+    from ...entidades.vehiculo import Vehiculo, Camion, Moto
+
+class VehiculoFactory:
+    """
+    Implementa el patrón Factory Method para crear diferentes tipos de vehículos.
+    Desacopla la lógica de negocio de las clases concretas de vehículos.
+    """
+    
+    # Contador simple para IDs únicos de vehículos
+    _contador_camion = 0
+    _contador_moto = 0
+
+    @staticmethod
+    def _crear_camion() -> 'Camion':
+        """Método privado para crear un Camión."""
+        from ...entidades.vehiculo import Camion
+        VehiculoFactory._contador_camion += 1
+        return Camion(id_vehiculo=f"CAM-{VehiculoFactory._contador_camion}", capacidad_kg=1000.0)
+
+    @staticmethod
+    def _crear_moto() -> 'Moto':
+        """Método privado para crear una Moto."""
+        from ...entidades.vehiculo import Moto
+        VehiculoFactory._contador_moto += 1
+        return Moto(id_vehiculo=f"MOT-{VehiculoFactory._contador_moto}", capacidad_kg=PESO_MAXIMO_MOTO)
+
+    @staticmethod
+    def crear_vehiculo(peso_paquete_kg: float) -> 'Vehiculo':
+        """
+        Método de fábrica principal. Decide qué vehículo crear basado en el peso.
+
+        Args:
+            peso_paquete_kg (float): El peso del paquete a transportar.
+
+        Returns:
+            Vehiculo: Una instancia de Camion o Moto.
+        """
+        # Lógica de decisión centralizada
+        if peso_paquete_kg > PESO_MAXIMO_MOTO:
+            print(f"DEBUG (Factory): Peso {peso_paquete_kg}kg > {PESO_MAXIMO_MOTO}kg. Creando Camión.")
+            return VehiculoFactory._crear_camion()
+        else:
+            print(f"DEBUG (Factory): Peso {peso_paquete_kg}kg <= {PESO_MAXIMO_MOTO}kg. Creando Moto.")
+            return VehiculoFactory._crear_moto()
+
