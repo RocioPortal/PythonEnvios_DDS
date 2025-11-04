@@ -1,141 +1,146 @@
-Sistema de Gestión Logística - PythonEnvios
-Alumna: Pilar Rocio Portal Romano   
-Legajo: 63217
-Ingeniería en informática
+**Alumna:** Pilar Rocío Portal Romano  
+**Legajo:** 63217  
+**Carrera:** Ingeniería en Informática  
 
-Sistema de gestión logística para el envío de paquetes, demostrando la implementación de patrones de diseño clave en Python. Este proyecto simula la lógica de negocio central de una empresa de envíos, aplicando principios de diseño de software para mantenibilidad y extensibilidad.
+# Sistema de Gestión Logística - PythonEnvios
 
-Tabla de Contenidos
+Sistema de gestión logística para el envío de paquetes, demostrando la implementación de patrones de diseño clave en Python.  
+Este proyecto simula la lógica de negocio central de una empresa de envíos, aplicando principios de diseño de software para mantenibilidad y extensibilidad.
 
-Contexto del Dominio
+---
 
-Características Principales
+## Tabla de Contenidos
+- [Contexto del Dominio](#contexto-del-dominio)
+- [Características Principales](#características-principales)
+- [Arquitectura del Sistema](#arquitectura-del-sistema)
+- [Patrones de Diseño Implementados](#patrones-de-diseño-implementados)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Ejemplo de Uso](#ejemplo-de-uso)
 
-Arquitectura del Sistema
+---
 
-Patrones de Diseño Implementados
+## Contexto del Dominio
 
-Estructura del Proyecto
+**PythonEnvios** aborda los desafíos de una empresa de logística moderna.  
+El sistema debe:
 
-Ejemplo de Uso
+- **Gestionar Paquetes:** Registrar paquetes con origen, destino, peso y un estado de seguimiento (`Registrado`, `En Tránsito`, `Entregado`).
+- **Gestionar Flota de Vehículos:** Asignar el vehículo correcto (`Camión`, `Moto`) según las características del paquete (por ejemplo, el peso).
+- **Optimizar Rutas:** Calcular la mejor ruta para una entrega según diferentes criterios (la más rápida vs. la más corta).
+- **Notificar Estado:** Informar a los interesados (clientes, sistema central) en tiempo real sobre los cambios en el estado del paquete.
+- **Rastreo Centralizado:** Mantener un registro único y global del estado de todos los envíos activos.
 
-Contexto del Dominio
+---
 
-PythonEnvios aborda los desafíos de una empresa de logística moderna. El sistema debe:
+## Características Principales
 
-Gestionar Paquetes: Registrar paquetes con origen, destino, peso y un estado de seguimiento (Registrado, En Tránsito, Entregado).
+- **Creación Flexible de Vehículos:**  
+  Usa el patrón *Factory Method* para instanciar el vehículo adecuado (`Camión`, `Moto`) según el peso del paquete.
 
-Gestionar Flota de Vehículos: Asignar el vehículo correcto (Camión, Moto) según las características del paquete (ej. peso).
+- **Optimización de Rutas:**  
+  Emplea el patrón *Strategy* para seleccionar dinámicamente el algoritmo de cálculo de ruta (`RutaMasRapida`, `RutaMasCorta`).
 
-Optimizar Rutas: Calcular la mejor ruta para una entrega según diferentes criterios (la más rápida vs. la más corta).
+- **Notificaciones en Tiempo Real:**  
+  Implementa el patrón *Observer* para que los `Paquetes` (Observables) notifiquen a los `Clientes` y al `SistemaRastreoGlobal` (Observers) sobre cambios de estado.
 
-Notificar Estado: Informar a los interesados (clientes, sistema central) en tiempo real sobre los cambios en el estado del paquete.
+- **Rastreo Global Único:**  
+  Utiliza el patrón *Singleton* para garantizar una única instancia del `SistemaRastreoGlobal`, accesible desde cualquier parte del sistema.
 
-Rastreo Centralizado: Mantener un registro único y global del estado de todos los envíos activos.
+---
 
-Características Principales
+## Arquitectura del Sistema
 
-Creación Flexible de Vehículos: Usa Factory Method para instanciar el vehículo adecuado (Camión, Moto) según las necesidades del envío (ej. peso del paquete).
+El sistema sigue principios **SOLID** y una **separación clara por capas**:
 
-Optimización de Rutas: Emplea el patrón Strategy para seleccionar dinámicamente el algoritmo de cálculo de ruta (RutaMasRapida, RutaMasCorta).
+- **Entidades:** Clases de datos puras (`Paquete`, `Vehiculo`, `Cliente`) y contextos de patrones (`ServicioRutas`).
+- **Servicios:** Lógica de negocio (`ServicioLogistica`) y el `SistemaRastreoGlobal` (Singleton + Observer).
+- **Patrones:** Implementaciones aisladas de los patrones (`VehiculoFactory`, `EstrategiaRuteo`, `Observable`/`Observer`).
+- **Presentación:** `main.py` orquesta la demostración del sistema.
 
-Notificaciones en Tiempo Real: Implementa el patrón Observer para que los Paquetes (Observables) notifiquen a los Clientes y al SistemaRastreoGlobal (Observers) sobre cambios de estado.
+---
 
-Rastreo Global Único: Utiliza el patrón Singleton para garantizar una única instancia del SistemaRastreoGlobal, accesible desde cualquier parte del sistema.
+## Patrones de Diseño Implementados
 
-Arquitectura del Sistema
+### 1. SINGLETON
+- **Clase:** `SistemaRastreoGlobal`  
+- **Propósito:** Garantizar una única instancia para el seguimiento de todos los paquetes activos.  
+  Provee un punto de acceso global y evita datos duplicados o inconsistentes.
 
-El sistema sigue principios SOLID y una separación de capas clara:
+---
 
-Entidades: Clases de datos puras (Paquete, Vehiculo, Cliente) y Contextos de patrones (ServicioRutas).
+### 2. FACTORY METHOD
+- **Clase:** `VehiculoFactory`  
+- **Propósito:** Encapsular la lógica de creación de diferentes tipos de `Vehiculo` (`Camion`, `Moto`).  
+  El `ServicioLogistica` solicita un vehículo basado en el peso, sin conocer la clase concreta.
 
-Servicios: Clases con lógica de negocio (ServicioLogistica) y el Singleton (SistemaRastreoGlobal).
+---
 
-Patrones: Implementaciones aisladas de los patrones (VehiculoFactory, EstrategiaRuteo, Observable/Observer).
+### 3. OBSERVER
+- **Clases:**
+  - `Paquete` (Observable)  
+  - `ClienteNotifier` (Observer)  
+  - `SistemaRastreoGlobal` (Observer y Singleton)
 
-Presentación: main.py orquesta la demostración.
+- **Propósito:** Desacoplar el `Paquete` de los componentes que reaccionan a sus cambios de estado.  
+  Los observadores son notificados automáticamente ante actualizaciones como “En Tránsito” o “Entregado”.
 
-Patrones de Diseño Implementados
+---
 
-1. SINGLETON
+### 4. STRATEGY
+- **Clases:**
+  - `EstrategiaRuteo` (Interfaz)  
+  - `RutaMasRapida`, `RutaMasCorta` (Implementaciones concretas)  
+  - `ServicioRutas` (Contexto)
 
-Clase: SistemaRastreoGlobal
+- **Propósito:** Permitir que `ServicioRutas` seleccione y utilice diferentes algoritmos de cálculo de ruta de forma intercambiable, sin modificar su lógica interna.
 
-Propósito: Garantizar una única instancia para el seguimiento de todos los paquetes activos. Provee un punto de acceso global y centralizado al estado de todos los envíos, evitando datos duplicados o inconsistentes.
+---
 
-2. FACTORY METHOD
-
-Clase: VehiculoFactory
-
-Propósito: Encapsular la lógica de creación de diferentes tipos de Vehiculo (Camion, Moto). El ServicioLogistica pide un vehículo basado en el peso, sin necesidad de saber qué clase concreta se debe instanciar.
-
-3. OBSERVER
-
-Clases:
-
-Paquete (Observable): El sujeto que mantiene un estado.
-
-ClienteNotifier (Observer): Un observador concreto que reacciona a los cambios.
-
-SistemaRastreoGlobal (Observer): El Singleton también actúa como observador para actualizar su lista.
-
-Propósito: Desacoplar el Paquete de los componentes que necesitan reaccionar a sus cambios de estado (ej. "En Tránsito", "Entregado"). El paquete notifica a sus observadores suscritos automáticamente.
-
-4. STRATEGY
-
-Clases:
-
-EstrategiaRuteo (Interfaz): Define el contrato para un algoritmo de cálculo de ruta.
-
-RutaMasRapida, RutaMasCorta (Implementaciones): Algoritmos concretos.
-
-ServicioRutas (Contexto): Mantiene una referencia a una estrategia y la utiliza para calcular la ruta.
-
-Propósito: Permitir que el ServicioRutas seleccione y utilice diferentes algoritmos para calcular la ruta de entrega de un paquete de forma intercambiable, sin cambiar el servicio que lo usa.
-
-Estructura del Proyecto
+## Estructura del Proyecto
 
 PythonEnvios/
-|
-+-- .gitignore
-+-- main.py
-+-- README.md
-+-- USER_STORIES.md
-|
-+-- python_envios/
-    |
-    +-- __init__.py
-    +-- constantes.py
-    |
-    +-- entidades/
-    |   +-- __init__.py
-    |   +-- paquete.py
-    |   +-- vehiculo.py
-    |   +-- cliente.py
-    |   +-- servicio_rutas.py  # Contexto de Strategy
-    |
-    +-- servicios/
-    |   +-- __init__.py
-    |   +-- servicio_logistica.py
-    |   +-- sistema_rastreo_global.py # Singleton y Observer
-    |
-    +-- patrones/
-        |   +-- __init__.py
-        |   +-- factory/
-        |   |   +-- __init__.py
-        |   |   +-- vehiculo_factory.py
-        |   +-- observer/
-        |   |   +-- __init__.py
-        |   |   +-- observable.py
-        |   |   +-- observer.py
-        |   |   +-- cliente_notifier.py
-        |   +-- strategy/
-        |       +-- __init__.py
-        |       +-- estrategia_ruteo.py
+│
+├── .gitignore
+├── main.py
+├── README.md
+├── USER_STORIES.md
+│
+└── python_envios/
+├── init.py
+├── constantes.py
+│
+├── entidades/
+│ ├── init.py
+│ ├── paquete.py
+│ ├── vehiculo.py
+│ ├── cliente.py
+│ ├── servicio_rutas.py # Contexto de Strategy
+│
+├── servicios/
+│ ├── init.py
+│ ├── servicio_logistica.py
+│ ├── sistema_rastreo_global.py # Singleton + Observer
+│
+└── patrones/
+├── init.py
+├── factory/
+│ ├── init.py
+│ ├── vehiculo_factory.py
+├── observer/
+│ ├── init.py
+│ ├── observable.py
+│ ├── observer.py
+│ ├── cliente_notifier.py
+└── strategy/
+├── init.py
+├── estrategia_ruteo.py
 
 
-Ejemplo de Uso
+---
 
+## Ejemplo de Uso
+
+```python
 # main.py
 from python_envios.servicios.servicio_logistica import ServicioLogistica
 from python_envios.entidades.cliente import Cliente
@@ -146,14 +151,19 @@ from python_envios.patrones.strategy.estrategia_ruteo import RutaMasCorta
 # Servicios y Singleton
 logistica = ServicioLogistica()
 cliente_ana = Cliente("Ana")
-servicio_rutas = ServicioRutas() # Contexto de Strategy
+servicio_rutas = ServicioRutas()  # Contexto de Strategy
 
-# Crear y enviar paquete (usa Factory, Observer internamente)
-paquete_id = logistica.registrar_y_asignar_paquete("Origen A", "Destino B", 5.0, [cliente_ana])
+# Crear y enviar paquete (usa Factory y Observer internamente)
+paquete_id = logistica.registrar_y_asignar_paquete(
+    "Origen A", "Destino B", 5.0, [cliente_ana]
+)
 
 # Seleccionar estrategia de ruteo (Strategy)
 servicio_rutas.set_estrategia(RutaMasCorta())
-ruta = servicio_rutas.calcular_ruta("Origen A", "Destino B", 10.0, logistica.get_paquete(paquete_id).get_vehiculo())
+ruta = servicio_rutas.calcular_ruta(
+    "Origen A", "Destino B", 10.0,
+    logistica.get_paquete(paquete_id).get_vehiculo()
+)
 
 # Procesar envío (cambia estado y notifica observers)
 logistica.procesar_envio(paquete_id)
