@@ -98,6 +98,7 @@ El sistema sigue principios **SOLID** y una **separación clara por capas**:
 
 ## Estructura del Proyecto
 
+```text
 PythonEnvios/
 │
 ├── .gitignore
@@ -106,35 +107,35 @@ PythonEnvios/
 ├── USER_STORIES.md
 │
 └── python_envios/
-├── init.py
-├── constantes.py
-│
-├── entidades/
-│ ├── init.py
-│ ├── paquete.py
-│ ├── vehiculo.py
-│ ├── cliente.py
-│ ├── servicio_rutas.py # Contexto de Strategy
-│
-├── servicios/
-│ ├── init.py
-│ ├── servicio_logistica.py
-│ ├── sistema_rastreo_global.py # Singleton + Observer
-│
-└── patrones/
-├── init.py
-├── factory/
-│ ├── init.py
-│ ├── vehiculo_factory.py
-├── observer/
-│ ├── init.py
-│ ├── observable.py
-│ ├── observer.py
-│ ├── cliente_notifier.py
-└── strategy/
-├── init.py
-├── estrategia_ruteo.py
-
+    ├── __init__.py
+    ├── constantes.py
+    │
+    ├── entidades/
+    │   ├── __init__.py
+    │   ├── paquete.py
+    │   ├── vehiculo.py
+    │   ├── cliente.py
+    │   ├── servicio_rutas.py        # Contexto de Strategy
+    │
+    ├── servicios/
+    │   ├── __init__.py
+    │   ├── servicio_logistica.py
+    │   ├── sistema_rastreo_global.py  # Singleton + Observer
+    │
+    └── patrones/
+        ├── __init__.py
+        ├── factory/
+        │   ├── __init__.py
+        │   ├── vehiculo_factory.py
+        ├── observer/
+        │   ├── __init__.py
+        │   ├── observable.py
+        │   ├── observer.py
+        │   ├── cliente_notifier.py
+        └── strategy/
+            ├── __init__.py
+            ├── estrategia_ruteo.py
+```
 
 ---
 
